@@ -49,5 +49,5 @@ tb1 <-
 ) |> 
     kable()
 
-as_image(tb1, file = here("outputs", "table1.png"))
+as_image(tb1, file = here("outputs", "table1.md"))
 
