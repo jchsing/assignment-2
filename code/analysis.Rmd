@@ -1,0 +1,81 @@
+---
+title: "Assignment 2 Analysis"
+output: html_document
+---
+```{r, include = F}
+#### if need to install packages, run below
+# install.packages("here")
+# install.packages("readr")
+# install.packages("tidyverse")
+# install.packages("table1")
+# install.packages("ggplot2")
+```
+
+#### Imports
+```{r, message = F, warning = F}
+library(here)
+library(tidyverse)
+library(readr)
+library(table1)
+library(ggplot2)
+```
+
+#### Load Data
+```{r}
+raw_data <- read_csv(here("raw-data", "cohort.csv"))
+glimpse(raw_data)
+```
+
+#### 1. Table
+```{r}
+df <- 
+    raw_data |> 
+    mutate(
+        smoke = factor(smoke, 
+                       levels = c(0,1), 
+                       labels = c("no", "yes")), 
+        female = factor(female, 
+                        levels = c(0,1), 
+                        labels = c("no", "yes")), 
+        cardiac = factor(cardiac, 
+                         levels = c(1,0), 
+                         labels = c("cardiac event", "no cardiac event"))
+    ) |> 
+    mutate(
+        age_cat = case_when(
+        age < 30 ~ "18-29", 
+        age >= 30 & age < 50 ~ "30-49", 
+        age >= 50 ~ "51+", 
+        TRUE ~ NA_character_
+    ))
+
+
+tb1 <- table1(~ age + female + cost + smoke | cardiac, data = df)
+tb1
+```
+
+#### 2. Analysis: prediction algorithm (glm)
+```{r}
+model <- glm(cardiac ~ age + female + smoke + cost, data = df, family = "binomial")
+summary(model)
+```
+
+#### 3. Figure: 
+```{r}
+df |> 
+    ggplot() + 
+    geom_boxplot(aes(x = age_cat, y = cost, color = age_cat, fill = age_cat), 
+                 alpha = 0.2)
+
+df |> 
+    ggplot() + 
+    geom_density(aes(x = cost, fill = cardiac, color = cardiac), 
+                 alpha = 0.5)
+```
+
+
+#### 4. Summary:
+
+
+### AI Statement:
+I did not use any generative AI technology to complete any portion of the work.
