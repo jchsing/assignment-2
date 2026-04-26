@@ -1,0 +1,84 @@
+---
+title: "Assignment 2"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(comment = "")
+```
+
+```{r, include = F}
+#### if need to install packages, run below
+# install.packages("here")
+# install.packages("readr")
+# install.packages("tidyverse")
+# install.packages("table1")
+# install.packages("ggplot2")
+```
+
+#### Imports
+```{r, message = F, warning = F}
+library(here)
+library(tidyverse)
+library(readr)
+library(table1)
+library(ggplot2)
+```
+
+#### Load Data
+```{r}
+raw_data <- read_csv(here("raw-data", "cohort.csv"))
+glimpse(raw_data)
+```
+
+#### 1. Table
+```{r}
+df <- 
+    raw_data |> 
+    mutate(
+        smoke = factor(smoke, 
+                       levels = c(0,1), 
+                       labels = c("no", "yes")), 
+        female = factor(female, 
+                        levels = c(0,1), 
+                        labels = c("no", "yes")), 
+        cardiac = factor(cardiac, 
+                         levels = c(1,0), 
+                         labels = c("cardiac event", "no cardiac event"))
+    ) |> 
+    mutate(
+        age_cat = case_when(
+        age < 30 ~ "18-29", 
+        age >= 30 & age < 50 ~ "30-49", 
+        age >= 50 ~ "50+", 
+        TRUE ~ NA_character_
+    ))
+
+
+tb1 <- table1(~ age_cat + female + cost + smoke + cardiac, data = df)
+tb1
+```
+
+#### 2. Analysis: linear regression
+```{r}
+model <- glm(cost ~ age_cat + female + smoke + cardiac, data = df)
+summary(model)
+```
+
+#### 3. Figure: 
+```{r}
+df |> 
+    ggplot() + 
+    geom_boxplot(aes(x = age_cat, y = cost, color = age_cat, fill = age_cat), 
+                 alpha = 0.2) + 
+    labs(x = "Age Category (years)", 
+         y = "Cost (dollars)", 
+         color = NULL, fill = NULL) 
+    
+```
+
+
+#### 4. Summary:
+I ran a linear regression to assess the relationship of `age` and `cost`, adjusting for `female`, `smoke`, and `cardiac`. `age` was categorized into three groups: 18-29, 30-49, and 50+ for better visualization and interpretability. From our linear model, we see that age is a significant and positive predictor of `cost` and that individuals in older age groups are more likely to pay more `cost` than younger age groups (on average, there seems to be ~200-300 increase in `cost` per age group). The figure shows the distribution of `cost` by `age_cat`.
+
+### AI Statement:
+I did not use any generative AI technology to complete any portion of the work.
