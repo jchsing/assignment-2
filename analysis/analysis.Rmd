@@ -1,9 +1,16 @@
 ---
 title: "Assignment 2"
-output: github_document
+output: 
+    github_document:
+        html_preview: false
+
 ---
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(comment = "")
+knitr::opts_chunk$set(
+    comment = "", 
+    fig.path = "../outputs/figures/",
+    dev = "png",
+    dpi = 300)
 ```
 
 ```{r, include = F}
@@ -54,8 +61,10 @@ df <-
     ))
 
 
-tb1 <- table1(~ age_cat + female + cost + smoke + cardiac, data = df)
-tb1
+tb1 <- table1(~ age_cat + female + cost + smoke + cardiac, data = df) |> 
+    as.data.frame()
+
+knitr::kable(tb1)
 ```
 
 #### 2. Analysis: linear regression
@@ -65,7 +74,7 @@ summary(model)
 ```
 
 #### 3. Figure: 
-```{r}
+```{r figure 1}
 df |> 
     ggplot() + 
     geom_boxplot(aes(x = age_cat, y = cost, color = age_cat, fill = age_cat), 
