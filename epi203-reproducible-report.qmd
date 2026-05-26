@@ -1,0 +1,110 @@
+---
+title: "EPI 203: Reproducible Report"
+format: pdf
+author: Julianna Hsing
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+    comment = "", 
+    fig.path = "../outputs/figures/",
+    dev = "png",
+    dpi = 300)
+```
+
+```{r, include = F}
+#### if need to install packages, run below
+# install.packages("here")
+# install.packages("readr")
+# install.packages("tidyverse")
+# install.packages("gtsummary")
+# install.packages("ggplot2")
+
+library(here)
+library(tidyverse)
+library(readr)
+library(gtsummary)
+library(ggplot2)
+```
+
+# Introduction
+In this analysis, we 
+
+*Note: there are many things that we are taking creative liberty on, including things like the units of health care costs and what the overall purpose of this study is.*
+
+
+# Methods
+
+```{r, message = F, echo = F}
+raw_data <- read_csv(here("raw-data", "cohort.csv"))
+df <- 
+    raw_data |> 
+    mutate(
+        smoke = factor(smoke, 
+                       levels = c(0,1), 
+                       labels = c("no", "yes")), 
+        female = factor(female, 
+                        levels = c(0,1), 
+                        labels = c("no", "yes")), 
+        cardiac = factor(cardiac, 
+                         levels = c(1,0), 
+                         labels = c("cardiac event", "no cardiac event"))
+    ) |> 
+    mutate(
+        age_cat = case_when(
+        age < 30 ~ "18-29", 
+        age >= 30 & age < 50 ~ "30-49", 
+        age >= 50 ~ "50+", 
+        TRUE ~ NA_character_
+    ))
+```
+
+```{r, message = F}
+df |> 
+    tbl_summary(
+        statistic = list(all_continuous() ~ "{mean} ({sd})")
+    )
+```
+
+**Study Population.**
+```{r, echo = F}
+n_total = nrow(raw_data)
+n_female = sum(raw_data$female)
+p_female = round((n_female/n_total)*100, 0)
+n_smoker = sum(raw_data$smoke)
+p_smoker = round((n_smoker/n_total)*100, 0)
+mean_age = round(mean(raw_data$age), 0)
+mean_cost = round(mean(raw_data$cost), 0)
+
+```
+
+
+Our study sample contains `{r} n_total` individuals, `{r} p_smoker`% of which are female, `{r} p_smoker`% are smokers. The mean age is `{r} mean_age`. The average cost of health care is $`{r} mean_cost` per year.
+
+**Outcome.**
+
+**Exposures.**
+
+**Statistical Analysis.**
+
+We ran a generalized linear regression to assess the relationship of `age` and `cost`, adjusting for `female`, `smoke`, and `cardiac`. `age` was categorized into three groups: 18-29, 30-49, and 50+ for better visualization and interpretability.
+
+# Results
+From our linear model, we see that age is a significant and positive predictor of `cost` and that individuals in older age groups are more likely to pay more `cost` than younger age groups (on average, there seems to be \~200-300 increase in `cost` per age group). Figure 1 shows the distribution of `cost` by `age_cat`.
+
+```{r}
+fig1 <- 
+    df |> 
+    ggplot() + 
+    geom_boxplot(aes(x = age_cat, y = cost, color = age_cat, fill = age_cat), 
+                 alpha = 0.2) + 
+    labs(x = "Age Category (years)", 
+         y = "Cost (dollars)", 
+         color = NULL, fill = NULL) 
+```
+
+![](/outputs/figures/figure%201-1.png)
+
+# Discussion
+
+**AI Statement:** *I attest that I did not use generative AI technology to complete this assignment.*
