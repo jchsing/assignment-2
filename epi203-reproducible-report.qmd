@@ -239,7 +239,7 @@ df_tbl |>
 ```
 
 ```{r, message = F, echo = F}
-#| fig-cap: "Box plot distributions of annual health care costs by age category and smoking status"
+#| fig-cap: "violin plot distributions of annual health care costs by age category and smoking status"
 #| fig-width: 6
 #| fig-height: 4
 
@@ -259,7 +259,7 @@ df_tbl |>
             fill = smoke
             )
         ) +
-    geom_boxplot(
+    geom_violin(
         alpha = 0.2, 
         position = position_dodge(width = 0.8)
         ) +
