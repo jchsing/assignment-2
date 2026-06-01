@@ -5,7 +5,7 @@ This repository includes the simulated data for Assignment #2 and #4.
 The csv file for `cohort` in the `raw-data` folder includes 5,000 observations with variables `smoke`, `female`, `age`, `cardiac`, and `cost`.<br>
 
 ### FOR ASSIGNMENT #4: 
-See [rendered pdf of reproducible report](epi203-reproducible-report.pdf).
+See [rendered pdf of reproducible report](epi203-reproducible-report.pdf)
 
 See [qmd file with code](epi203-reproducible-report.qmd)
 
