@@ -229,13 +229,11 @@ df_tbl |>
         aes(x = age_cat, 
             y = cost, 
             color = age_cat, 
-            fill = age_cat
-            ), 
+            fill = age_cat), 
         alpha = 0.2) + 
     labs(x = "Age Category (years)", 
         y = "Annual Cost (dollars)", 
-        color = NULL, fill = NULL
-        )
+        color = NULL, fill = NULL)
 ```
 
 ```{r, message = F, echo = F}
