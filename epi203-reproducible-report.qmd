@@ -221,7 +221,7 @@ Being female was associated with `r beta_female` lower annual costs (95% CI: `r 
 ```{r, message = F}
 #| fig-cap: "Box plot distributions of health care costs per year by age category"
 #| fig-width: 6
-#| fig-height: 4
+#| fig-height: 3.5
 
 df_tbl |> 
     ggplot() + 
@@ -239,7 +239,7 @@ df_tbl |>
 ```{r, message = F, echo = F}
 #| fig-cap: "violin plot distributions of annual health care costs by age category and smoking status"
 #| fig-width: 6
-#| fig-height: 4
+#| fig-height: 3.5
 
 df_tbl |> 
     mutate(
@@ -276,10 +276,8 @@ This report demonstrates several principles of reproducible research (e.g., data
 
 This document is just one stop in the direction of setting up an analysis workflow that is scalable, reproducible and replicable for future sophisticated analyses. Through this class, I learned many things. Perhaps one of the most important take-aways is that reproducible reporting practices improve transparency, facilitate collaboration, and increases confidence in scientific evidence by ensuring that results can code can be replicated by other researchers. We should encourage everyone to do it! 
 
-<br>
-<br>
-
-**AI Statement:** *I attest that I did not use generative AI technology to complete this assignment.*
+# AI Statement
+*I attest that I did not use generative AI technology to complete this assignment.*
 
 # References
 ::: {#refs}
